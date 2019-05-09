@@ -1,25 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ThemeProvider } from 'styled-components';
+import { Drizzle } from 'drizzle';
+import { DrizzleContext } from 'drizzle-react';
+import generateStore, { drizzleOptions } from './store/generateStore';
+import theme from './theme';
+import GameBoard from './pages/GameBoard';
 
 function App() {
+  const drizzle = new Drizzle(drizzleOptions, generateStore());
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <DrizzleContext.Provider drizzle={drizzle}>
+      <ThemeProvider theme={theme}>
+        <GameBoard />
+      </ThemeProvider>
+    </DrizzleContext.Provider>
   );
 }
 
