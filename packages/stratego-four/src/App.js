@@ -4,7 +4,7 @@ import { Drizzle } from 'drizzle';
 import { DrizzleContext } from 'drizzle-react';
 import generateStore, { drizzleOptions } from './store/generateStore';
 import theme from './theme';
-import GameBoard from './pages/GameBoard';
+import PlayField from './pages/PlayField';
 
 function App() {
   const drizzle = new Drizzle(drizzleOptions, generateStore());
@@ -12,7 +12,7 @@ function App() {
   return (
     <DrizzleContext.Provider drizzle={drizzle}>
       <ThemeProvider theme={theme}>
-        <GameBoard />
+        <PlayField />
       </ThemeProvider>
     </DrizzleContext.Provider>
   );
