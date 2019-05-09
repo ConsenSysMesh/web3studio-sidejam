@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box } from 'rimble-ui';
 import { red, yellow, green, blue, grey } from '../theme/colors';
+import GamePiece from './GamePiece';
 
 const rectWidth = 100;
 
@@ -36,7 +37,25 @@ const Grid = ({ height, width, xOffset = 0, yOffset = 0, fill }) => (
   </>
 );
 
-export default props => {
+const positions = {
+  A: 1,
+  B: 2,
+  C: 3,
+  D: 4,
+  E: 5,
+  F: 6,
+  G: 7,
+  H: 8,
+  I: 9,
+  J: 10,
+  K: 11,
+  L: 12,
+  M: 13,
+  N: 14,
+  O: 15
+};
+
+export default ({ game, ...props }) => {
   return (
     <Box {...props}>
       <svg
@@ -89,47 +108,44 @@ export default props => {
           strokeWidth="3"
         />
 
-        {Array(15)
-          .fill('')
-          .map((value, index) => (
-            <text
-              x={20}
-              y={index * 100 + 150}
-              text-anchor="middle"
-              dominant-baseline="middle"
-              className={'header'}
-            >
-              {index + 1}
-            </text>
-          ))}
+        {Object.entries(game).map(([color, pieces]) =>
+          pieces.map(piece => (
+            <GamePiece
+              x={positions[piece.x] * rectWidth + 24}
+              y={piece.y * rectWidth + 20}
+              color={color}
+            />
+          ))
+        )}
 
-        {[
-          'A',
-          'B',
-          'C',
-          'D',
-          'E',
-          'F',
-          'G',
-          'H',
-          'I',
-          'J',
-          'K',
-          'L',
-          'M',
-          'N',
-          'O'
-        ].map((value, index) => (
-          <text
-            y={40}
-            x={index * 100 + 150}
-            text-anchor="middle"
-            dominant-baseline="middle"
-            className={'header'}
-          >
-            {value}
-          </text>
-        ))}
+        {Object.entries(positions).map(([label, pos]) => {
+          const offset = (pos - 1) * rectWidth + rectWidth * 1.5;
+          const fixed = 40;
+
+          return (
+            <>
+              <text
+                x={fixed}
+                y={offset}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                className={'header'}
+              >
+                {pos}
+              </text>
+
+              <text
+                y={fixed}
+                x={offset}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                className={'header'}
+              >
+                {label}
+              </text>
+            </>
+          );
+        })}
       </svg>
     </Box>
   );
