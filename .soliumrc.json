@@ -1,0 +1,4 @@
+{
+  "extends": "web3studio",
+  "plugins": ["security"]
+}

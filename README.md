@@ -17,13 +17,11 @@ a project from the [ConsenSys Web3Studio](https://consensys.net/web3studio/) tea
 
 We are beginning development on this exciting new idea and you can follow the latest updates here through GitHub. Please join the discussion, create issues, and get involved!
 
-
 ## Overview
 
 This repo holds the code and development assets SideJam.
 
 **More Coming Soon.** Watch this repo to stay up to date on new developments.
-
 
 ## License
 

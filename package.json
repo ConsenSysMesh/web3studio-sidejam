@@ -1,0 +1,46 @@
+{
+  "name": "web3studio-sidejam",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Service coordination on Ethereum",
+  "main": "index.js",
+  "scripts": {
+    "test": "yarn lint && yarn test:packages",
+    "test:packages": "lerna run test --concurrency 1",
+    "lint": "yarn eslint . && yarn solium -d .",
+    "prettier": "prettier \"**/*.{js,json,css,md}\" --write",
+    "lerna:version": "lerna version --no-push",
+    "lerna:publish": "lerna publish from-package"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ConsenSys/web3studio-sidejam.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ConsenSys/web3studio-sidejam/issues"
+  },
+  "homepage": "https://github.com/ConsenSys/web3studio-sidejam#readme",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-web3studio": "^1.2.0",
+    "husky": "^2.2.0",
+    "lerna": "^3.5.0",
+    "prettier": "^1.17.0",
+    "pretty-quick": "^1.10.0",
+    "solium": "^1.2.4",
+    "solium-config-web3studio": "^1.2.0",
+    "truffle": "^5.0.15"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn pretty-quick --staged"
+    }
+  }
+}
