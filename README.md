@@ -15,7 +15,7 @@
 Welcome to the near future. This repo is the home of **SideJam**. This is
 a project from the [ConsenSys Web3Studio](https://consensys.net/web3studio/) team.
 
-We are beginning development on this exciting new idea and you can follow the latest updates here through GitHub. Please join the discussion, create issues, and get involved!
+Web3Studio doesn't just do open source projects. We do open source from the first line of code and the first fragment of an idea that leads to that code. SideJam is an approach to using the Ethereum mainnet as a message bus between confidential state machines. Get on board now. Raise your hand to be part of our first community call, and you'll be ahead of the pack as we figure out what this thing is going to be.
 
 
 ## Overview
