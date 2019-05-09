@@ -2,6 +2,7 @@
   "name": "stratego-four",
   "version": "0.1.0",
   "private": true,
+  "author": "Web3Studio Developers <web3studio@consensys.net>",
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
