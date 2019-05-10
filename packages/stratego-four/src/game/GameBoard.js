@@ -11,6 +11,7 @@ const Row = ({ width, xOffset, yOffset, fill }) => (
       .fill('')
       .map((value, index) => (
         <rect
+          key={`rect-${xOffset}-${index}`}
           x={xOffset * rectWidth + index * rectWidth}
           y={yOffset * rectWidth}
           width={rectWidth}
@@ -28,6 +29,7 @@ const Grid = ({ height, width, xOffset = 0, yOffset = 0, fill }) => (
       .fill('')
       .map((value, index) => (
         <Row
+          key={`grid-${xOffset}-${yOffset}-${index}`}
           width={width}
           xOffset={xOffset}
           yOffset={yOffset + index}
@@ -111,6 +113,7 @@ export default ({ game, ...props }) => {
         {Object.entries(game).map(([color, pieces]) =>
           pieces.map(piece => (
             <GamePiece
+              key={`${color}-{${piece.x},${piece.y}}`}
               x={positions[piece.x] * rectWidth + 24}
               y={piece.y * rectWidth + 20}
               color={color}
@@ -123,7 +126,7 @@ export default ({ game, ...props }) => {
           const fixed = 40;
 
           return (
-            <>
+            <React.Fragment key={`label-${label}-${pos}`}>
               <text
                 x={fixed}
                 y={offset}
@@ -143,7 +146,7 @@ export default ({ game, ...props }) => {
               >
                 {label}
               </text>
-            </>
+            </React.Fragment>
           );
         })}
       </svg>

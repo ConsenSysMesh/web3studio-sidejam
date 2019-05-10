@@ -13,6 +13,7 @@
     "test": "truffle test",
     "build": "yarn buidl",
     "buidl": "truffle compile",
+    "migrate": "truffle migrate --reset",
     "truffle": "truffle"
   },
   "bugs": {

@@ -15,7 +15,11 @@
     "rimble-ui": "^0.8.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently -n w: npm:start:*",
+    "start:ganache": "yarn ganache-cli -i 42 -d",
+    "start:web": "react-scripts start",
+    "start:migrate": "lerna run migrate --scope message-bus -- -- --skip-dry-run --network=development --contracts_build_directory=$(pwd)/src/build/contracts",
+    "migrate": "truffle migrate --reset",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -36,6 +40,9 @@
     ]
   },
   "devDependencies": {
+    "concurrently": "^4.1.0",
+    "ganache-cli": "^6.4.3",
+    "message-bus": "0.0.0",
     "styled-components": "^4.2.0"
   }
 }

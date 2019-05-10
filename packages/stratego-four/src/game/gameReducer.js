@@ -1,7 +1,4 @@
-import React from 'react';
-import GameBoard from '../components/GameBoard';
-
-const game = {
+const initialState = {
   red: [
     { x: 'E', y: '13' },
     { x: 'F', y: '13' },
@@ -92,4 +89,8 @@ const game = {
   ]
 };
 
-export default () => <GameBoard width={'99vw'} game={game} />;
+const reducer = (state = initialState, action) => {
+  return state;
+};
+
+export default reducer;

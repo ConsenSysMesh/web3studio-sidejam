@@ -1,3 +1,3 @@
 export default {
-  contracts: []
+  contracts: [require('../build/contracts/Stratego4')]
 };

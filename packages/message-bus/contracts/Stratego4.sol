@@ -74,7 +74,7 @@ contract Stratego4 {
     }
   }
 
-  function _playerPieceCount(uint gameId, uint8 playerIndex) private returns(uint){
+  function _playerPieceCount(uint gameId, uint8 playerIndex) private view returns(uint){
     Game storage game = games[gameId];
 
     return game.players[game.playerAddresses[playerIndex]].pieceRankHashes.length;

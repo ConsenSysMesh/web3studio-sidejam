@@ -8,6 +8,8 @@ const { RevertTraceSubprovider } = require('@0x/sol-trace');
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
 
+const web3 = new Web3();
+
 require('dotenv').config();
 
 const mnemonic = process.env.SEED_PHRASE;
@@ -48,7 +50,6 @@ const createTestProvider = projectRoot => {
 
   return testProvider;
 };
-
 /**
  * Create's a provider for a given network
  *
@@ -62,63 +63,61 @@ const infuraProvider = network => () =>
     `https://${network}.infura.io/v3/${infuraApiKey}`
   );
 
-module.exports = projectRoot => {
-  const testProvider = createTestProvider(projectRoot);
-  let testProviderStarted = false;
+const testProvider = createTestProvider(__dirname);
+let testProviderStarted = false;
 
-  return {
-    networks: {
-      development: {
-        host: '127.0.0.1',
-        port: 7545,
-        network_id: '*' // Match any network id
-      },
-      test: {
-        provider: () => {
-          if (!testProviderStarted) {
-            // Within this function to not start the provider until it's needed
-            testProvider.addProvider(
-              new WebsocketProvider({ rpcUrl: 'http://localhost:7545' })
-            );
-
-            testProvider.start(err => {
-              testProviderStarted = true;
-
-              if (err !== undefined) {
-                // eslint-disable-next-line no-console
-                console.log('Failed to start provider', err);
-                process.exit(1);
-              }
-            });
-          }
-
-          return testProvider;
-        },
-        network_id: '*'
-      },
-      mainnet: {
-        provider: infuraProvider('mainnet'),
-        network_id: '1',
-        // When deploying to mainnet check https://ethgasstation.info/ for
-        // current gas price. "Standard" suggested
-        gasPrice: Web3.utils.toWei('0', 'gwei')
-      },
-      ropsten: {
-        provider: infuraProvider('ropsten'),
-        network_id: '3',
-        gasPrice: Web3.utils.toWei('20', 'gwei')
-      },
-      rinkeby: {
-        provider: infuraProvider('rinkeby'),
-        network_id: '4',
-        gasPrice: Web3.utils.toWei('10', 'gwei')
-      }
+module.exports = {
+  networks: {
+    development: {
+      host: '127.0.0.1',
+      port: 8545,
+      network_id: '*' // Match any network id
     },
-    // Configure your compilers
-    compilers: {
-      solc: {
-        version: solcVersion
-      }
+    test: {
+      provider: () => {
+        if (!testProviderStarted) {
+          // Within this function to not start the provider until it's needed
+          testProvider.addProvider(
+            new WebsocketProvider({ rpcUrl: 'http://localhost:7545' })
+          );
+
+          testProvider.start(err => {
+            testProviderStarted = true;
+
+            if (err !== undefined) {
+              // eslint-disable-next-line no-console
+              console.log('Failed to start provider', err);
+              process.exit(1);
+            }
+          });
+        }
+
+        return testProvider;
+      },
+      network_id: '*'
+    },
+    mainnet: {
+      provider: infuraProvider('mainnet'),
+      network_id: '1',
+      // When deploying to mainnet check https://ethgasstation.info/ for
+      // current gas price. "Standard" suggested
+      gasPrice: web3.utils.toWei('0', 'gwei')
+    },
+    ropsten: {
+      provider: infuraProvider('ropsten'),
+      network_id: '3',
+      gasPrice: web3.utils.toWei('20', 'gwei')
+    },
+    rinkeby: {
+      provider: infuraProvider('rinkeby'),
+      network_id: '4',
+      gasPrice: web3.utils.toWei('10', 'gwei')
     }
-  };
+  },
+  // Configure your compilers
+  compilers: {
+    solc: {
+      version: solcVersion
+    }
+  }
 };
