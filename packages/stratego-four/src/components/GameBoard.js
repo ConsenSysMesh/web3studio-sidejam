@@ -61,7 +61,7 @@ export default ({ game, ...props }) => {
       <svg
         height={'100%'}
         width={'100%'}
-        viewBox="0 0 1600 1600"
+        viewBox="0 0 1700 1700"
         preserveAspectRatio="xMidYMid meet"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -96,13 +96,13 @@ export default ({ game, ...props }) => {
           r="150"
           fill={grey[100]}
           stroke="black"
-          strokeWidth="2"
+          strokeWidth="3"
         />
 
         <circle
           cx="850"
           cy="850"
-          r="51.5"
+          r="50"
           fill={grey[200]}
           stroke="black"
           strokeWidth="3"

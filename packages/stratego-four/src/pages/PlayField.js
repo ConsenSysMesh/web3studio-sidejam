@@ -13,7 +13,6 @@ const game = {
     { x: 'E', y: '14' },
     { x: 'F', y: '14' },
     { x: 'G', y: '14' },
-    { x: 'H', y: '14' },
     { x: 'I', y: '14' },
     { x: 'J', y: '14' },
     { x: 'K', y: '14' },
@@ -36,7 +35,6 @@ const game = {
     { x: 'N', y: '5' },
     { x: 'N', y: '6' },
     { x: 'N', y: '7' },
-    { x: 'N', y: '8' },
     { x: 'N', y: '9' },
     { x: 'N', y: '10' },
     { x: 'N', y: '11' },
@@ -59,7 +57,6 @@ const game = {
     { x: 'E', y: '2' },
     { x: 'F', y: '2' },
     { x: 'G', y: '2' },
-    { x: 'H', y: '2' },
     { x: 'I', y: '2' },
     { x: 'J', y: '2' },
     { x: 'K', y: '2' },
@@ -82,7 +79,6 @@ const game = {
     { x: 'B', y: '5' },
     { x: 'B', y: '6' },
     { x: 'B', y: '7' },
-    { x: 'B', y: '8' },
     { x: 'B', y: '9' },
     { x: 'B', y: '10' },
     { x: 'B', y: '11' },
@@ -96,4 +92,4 @@ const game = {
   ]
 };
 
-export default () => <GameBoard height={'90vh'} width={'90vw'} game={game} />;
+export default () => <GameBoard width={'99vw'} game={game} />;

@@ -11,11 +11,20 @@
   },
   "scripts": {
     "test": "truffle test",
-    "build": "truffle compile",
+    "build": "yarn buidl",
+    "buidl": "truffle compile",
     "truffle": "truffle"
   },
   "bugs": {
     "url": "https://github.com/ConsenSys/web3studio-sidejam/issues"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "@0x/sol-coverage": "^3.0.3",
+    "@0x/sol-trace": "^2.0.11",
+    "dotenv": "^8.0.0",
+    "truffle-hdwallet-provider": "^1.0.9",
+    "web3": "^1.0.0-beta.55",
+    "web3-provider-engine": "^15.0.0"
+  }
 }
