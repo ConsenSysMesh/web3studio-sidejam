@@ -1,0 +1,12 @@
+## Jupyter
+.ipynb_checkpoints
+
+## Node
+node_modules
+*.log
+coverage/
+.env
+
+## Eth
+build/
+.0x-artifacts/

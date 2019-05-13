@@ -1,0 +1,23 @@
+{
+  "name": "message-bus",
+  "version": "0.0.0",
+  "description": "Message bus contracts",
+  "author": "Web3Studio Developers <web3studio@consensys.net>",
+  "homepage": "https://github.com/ConsenSys/web3studio-sidejam#readme",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ConsenSys/web3studio-sidejam.git"
+  },
+  "scripts": {
+    "build": "yarn buidl",
+    "buidl": "truffle compile",
+    "migrate": "truffle migrate --reset",
+    "truffle": "truffle"
+  },
+  "bugs": {
+    "url": "https://github.com/ConsenSys/web3studio-sidejam/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
