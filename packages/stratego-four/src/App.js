@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { Drizzle } from 'drizzle';
-import { DrizzleContext } from 'drizzle-react';
+import { drizzleReactHooks } from 'drizzle-react';
 import { Provider } from 'react-redux';
 import generateStore, { drizzleOptions } from './store/generateStore';
 import theme from './theme';
@@ -18,11 +18,13 @@ function App() {
 
   return (
     <Provider store={store}>
-      <DrizzleContext.Provider drizzle={drizzle}>
+      <drizzleReactHooks.DrizzleProvider drizzle={drizzle}>
         <ThemeProvider theme={theme}>
-          <PlayField />
+          <drizzleReactHooks.Initializer>
+            <PlayField />
+          </drizzleReactHooks.Initializer>
         </ThemeProvider>
-      </DrizzleContext.Provider>
+      </drizzleReactHooks.DrizzleProvider>
     </Provider>
   );
 }
