@@ -38,6 +38,7 @@ contract Stratego4 {
       game.state = GameState.Joining;
     }
 
+    require(!game.players[playerAddress].hasJoined, "Already joined game");
     require(game.state == GameState.Joining, "Game Already Full");
 
     game.playerAddresses.push(playerAddress);

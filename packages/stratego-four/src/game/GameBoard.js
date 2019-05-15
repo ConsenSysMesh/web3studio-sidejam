@@ -84,7 +84,7 @@ const positions = {
 
 const borderColor = grey[600];
 
-export default ({ game, ...props }) => {
+export default ({ pieces, ...props }) => {
   return (
     <Box {...props}>
       <svg
@@ -137,8 +137,8 @@ export default ({ game, ...props }) => {
           strokeWidth="3"
         />
 
-        {Object.entries(game).map(([color, pieces]) =>
-          pieces.map(piece => (
+        {Object.entries(pieces).map(([color, player]) =>
+          player.map(piece => (
             <GamePiece
               key={`${color}-{${piece.x},${piece.y}}`}
               x={positions[piece.x] * rectWidth + 24}

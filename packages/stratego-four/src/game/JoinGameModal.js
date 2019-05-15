@@ -1,31 +1,26 @@
 import React, { useState, useCallback } from 'react';
 import { Modal, Heading, Card, Form, Button } from 'rimble-ui';
-import { drizzleReactHooks } from 'drizzle-react';
+import { connect } from 'react-redux';
+import { selectCurrentGameId } from './gameSelectors';
+import { joinGame } from './gameReducer';
 
 /**
  * Renders a modal to join a specific game
  *
- * @returns {React.Element} - Rendered element
+ * @param {Object} props - React props
+ * @param {boolean} props.modalOpen - should the modal be open?
+ * @param {Function} props.joinGame - Join Game action
+ * @returns {React.Component} - A React Component
  */
-const JoinGameModal = () => {
+const JoinGameModal = ({ modalOpen, joinGame }) => {
   const [gameIdValue, setGameIdValue] = useState('');
-  const {
-    drizzle: { web3 },
-    useCacheSend,
-    useCacheCall
-  } = drizzleReactHooks.useDrizzle();
-  const { send } = useCacheSend('Stratego4', 'joinGame');
-
-  const gameId = useCacheCall('Stratego4', 'currentGame');
-  const modelOpen = gameId === '0';
-
   const handleSubmit = useCallback(
     event => {
       event.preventDefault();
 
-      send(web3.utils.asciiToHex(gameIdValue));
+      joinGame(gameIdValue);
     },
-    [send, web3, gameIdValue]
+    [gameIdValue, joinGame]
   );
 
   const updateGameIdValue = useCallback(
@@ -36,7 +31,7 @@ const JoinGameModal = () => {
   );
 
   return (
-    <Modal isOpen={modelOpen}>
+    <Modal isOpen={modalOpen}>
       <Card width={[1, 1 / 2]}>
         <Form onSubmit={handleSubmit}>
           <Heading.h3>Enter a Game</Heading.h3>
@@ -54,4 +49,24 @@ const JoinGameModal = () => {
   );
 };
 
-export default JoinGameModal;
+/**
+ * Maps redux state to React properties
+ *
+ * @param {Object} state - Redux State
+ * @returns {Object} Properties applied to the element
+ */
+const mapStateToProps = state => {
+  const gameId = selectCurrentGameId(state);
+  return {
+    modalOpen: gameId === '0'
+  };
+};
+
+const mapDispatchToProps = {
+  joinGame
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(JoinGameModal);

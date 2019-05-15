@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import GameBoard from './GameBoard';
 import JoinGameModal from './JoinGameModal';
+import { selectPieces } from './gameSelectors';
 
 /**
  * Renders the play field that represents the board game
@@ -9,10 +10,10 @@ import JoinGameModal from './JoinGameModal';
  * @param {Object} game - Game state
  * @returns {React.Element} - Rendered element
  */
-const PlayField = ({ game }) => {
+const PlayField = ({ pieces }) => {
   return (
     <>
-      <GameBoard width={'99vw'} game={game} />
+      <GameBoard width={'99vw'} pieces={pieces} />
       <JoinGameModal />
     </>
   );
@@ -24,7 +25,7 @@ const PlayField = ({ game }) => {
  * @returns {Object} props to pass through to the component
  */
 const mapStateToProps = state => ({
-  game: state.game
+  pieces: selectPieces(state)
 });
 
 export default connect(mapStateToProps)(PlayField);
