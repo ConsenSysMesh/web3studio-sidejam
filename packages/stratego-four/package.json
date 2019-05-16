@@ -7,7 +7,7 @@
     "start": "concurrently -n w: npm:start:*",
     "start:ganache": "yarn ganache-cli -i 42 -d",
     "start:web": "react-scripts start",
-    "start:migrate": "truffle migrate --reset --skip-dry-run --network=development --contracts_build_directory=$(pwd)/src/build/contracts",
+    "start:migrate": "rm -rf src/build && truffle migrate --reset --skip-dry-run --network=development --contracts_build_directory=$(pwd)/src/build/contracts",
     "build": "react-scripts build",
     "test": "yarn truffle build --contracts_build_directory=$(pwd)/src/build/contracts && CI=true yarn react-scripts test",
     "eject": "react-scripts eject"

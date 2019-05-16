@@ -26,8 +26,8 @@ contract Stratego4 {
   mapping (uint => Game) public games;
   mapping (address => uint) public playerGames;
 
-  function currentGame() public view returns(uint) {
-    return playerGames[msg.sender];
+  function currentGame(address player) public view returns(uint) {
+    return playerGames[player];
   }
 
   function joinGame(uint gameId) public {
@@ -48,5 +48,11 @@ contract Stratego4 {
     if (game.playerAddresses.length == 4) {
       game.state = GameState.AddingPieces;
     }
+  }
+
+  function currentPlayers(address player) public view returns(address[] memory) {
+    uint gameId = currentGame(player);
+
+    return games[gameId].playerAddresses;
   }
 }

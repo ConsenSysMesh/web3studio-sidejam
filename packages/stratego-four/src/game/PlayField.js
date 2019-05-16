@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import GameBoard from './GameBoard';
+import { PublicAddress, Heading, Box, Flex, Select } from 'rimble-ui';
 import JoinGameModal from './JoinGameModal';
-import { selectPieces } from './gameSelectors';
+import {
+  selectAccounts,
+  selectCurrentPlayerColors,
+  selectPieces
+} from './gameSelectors';
+import { setPlayer } from './gameReducer';
 
 /**
  * Renders the play field that represents the board game
@@ -10,12 +16,35 @@ import { selectPieces } from './gameSelectors';
  * @param {Object} game - Game state
  * @returns {React.Element} - Rendered element
  */
-const PlayField = ({ pieces }) => {
+const PlayField = ({ pieces, currentPlayers, accounts, switchAccount }) => {
+  const onPlayerChange = useCallback(
+    e => {
+      switchAccount(e.target.value);
+    },
+    [switchAccount]
+  );
+
   return (
-    <>
-      <GameBoard width={'99vw'} pieces={pieces} />
+    <Flex flexWrap="wrap">
+      <Box width={[1, 1, 1, 7 / 12, 8 / 12]}>
+        <GameBoard pieces={pieces} />
+      </Box>
+      <Box width={[1, 1, 1, 5 / 12, 4 / 12]}>
+        <Heading.h4>Players</Heading.h4>
+        {currentPlayers.map(({ address, color }) => (
+          <PublicAddress key={address} label={color} address={address} />
+        ))}
+
+        {accounts && accounts.length > 1 && (
+          <Box width={1}>
+            <Heading.h4>Switch Account</Heading.h4>
+            <Select items={accounts} onChange={onPlayerChange} />
+          </Box>
+        )}
+      </Box>
+
       <JoinGameModal />
-    </>
+    </Flex>
   );
 };
 /**
@@ -25,7 +54,16 @@ const PlayField = ({ pieces }) => {
  * @returns {Object} props to pass through to the component
  */
 const mapStateToProps = state => ({
-  pieces: selectPieces(state)
+  pieces: selectPieces(state),
+  currentPlayers: selectCurrentPlayerColors(state),
+  accounts: selectAccounts(state)
 });
 
-export default connect(mapStateToProps)(PlayField);
+const mapDispatchToProps = {
+  switchAccount: setPlayer
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PlayField);

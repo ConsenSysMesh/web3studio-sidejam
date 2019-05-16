@@ -1,5 +1,5 @@
 import { takeLatest, takeEvery, put, select } from 'redux-saga/effects';
-import { setCurrentGameKey, setPlayer, JOIN_GAME } from './gameReducer';
+import { setCacheKey, setPlayer, JOIN_GAME, SET_PLAYER } from './gameReducer';
 import { selectAccounts, selectPlayer } from './gameSelectors';
 
 let web3;
@@ -24,13 +24,23 @@ function* defaultTxOps() {
  *
  * @param {string} player - The address of the player
  */
-function* initializePlayer(player) {
-  yield put(setPlayer(player));
-
+function* initializePlayer({ player }) {
   // get the ops after setting the player
   const ops = yield defaultTxOps();
 
-  yield put(setCurrentGameKey(stratego4.methods.currentGame.cacheCall(ops)));
+  yield put(
+    setCacheKey(
+      'currentGame',
+      stratego4.methods.currentGame.cacheCall(player, ops)
+    )
+  );
+
+  yield put(
+    setCacheKey(
+      'currentPlayers',
+      stratego4.methods.currentPlayers.cacheCall(player, ops)
+    )
+  );
 }
 
 /**
@@ -49,7 +59,8 @@ export function initializeWeb3(action) {
  */
 export function* initializeGame() {
   const accounts = yield select(selectAccounts);
-  yield initializePlayer(accounts[0]);
+
+  yield put(setPlayer(accounts[0]));
 }
 
 /**
@@ -59,21 +70,24 @@ export function* initializeGame() {
  */
 export function* joinGame({ gameId }) {
   const ops = yield defaultTxOps();
+  const player = yield select(selectPlayer);
+  const gameKey = web3.utils.asciiToHex(gameId);
 
-  stratego4.methods.joinGame.cacheSend(web3.utils.asciiToHex(gameId), {
+  stratego4.methods.joinGame.cacheSend(gameKey, {
     ...ops,
     gas: 150000
   });
 
-  // Update currentGame in the cache
-  stratego4.methods.currentGame.cacheCall(ops);
+  // Re-initialize player to get the cache in order
+  yield put(setPlayer(player));
 }
 
 /**
  * A game redux saga, performs side effects
  */
 export default function* gameSaga() {
-  yield takeEvery(JOIN_GAME, joinGame);
   yield takeLatest('BLOCKS_LISTENING', initializeWeb3);
   yield takeEvery('DRIZZLE_INITIALIZED', initializeGame);
+  yield takeEvery(JOIN_GAME, joinGame);
+  yield takeEvery(SET_PLAYER, initializePlayer);
 }

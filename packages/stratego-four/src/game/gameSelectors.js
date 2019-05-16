@@ -22,7 +22,8 @@ export const selectContract = state => state.contracts.Stratego4;
  * @param {Object} state - Redux state
  * @returns {Object} provider accounts
  */
-export const selectAccounts = state => state.accounts;
+export const selectAccounts = state =>
+  Object.entries(state.accounts || []).map(([label, address]) => address);
 
 export const selectPieces = createSelector(
   selectGame,
@@ -34,10 +35,41 @@ export const selectPlayer = createSelector(
   game => game.player
 );
 
-export const selectCurrentGameId = createSelector(
-  selectGame,
-  selectContract,
-  (game, contract) => {
-    return contract.currentGame[game.currentGameKey].value;
+/**
+ * Create a selector for a cached function
+ *
+ * @param {string} key - The name of the cached function
+ * @returns {OutputSelector} - Cache selector
+ */
+const selectCacheValue = key =>
+  createSelector(
+    selectGame,
+    selectContract,
+    (game, contract) => {
+      const cachedValue = contract[key][game.cache[key]];
+
+      return cachedValue && cachedValue.value;
+    }
+  );
+
+export const selectCurrentGameId = selectCacheValue('currentGame');
+export const selectCurrentPlayers = selectCacheValue('currentPlayers');
+
+const playerColors = new Map([
+  [-1, ''],
+  [0, 'red'],
+  [1, 'green'],
+  [2, 'blue'],
+  [3, 'yellow']
+]);
+
+export const selectCurrentPlayerColors = createSelector(
+  selectPlayer,
+  selectCurrentPlayers,
+  (player, players = []) => {
+    return players.map((address, index) => ({
+      address,
+      color: playerColors.get(index)
+    }));
   }
 );
