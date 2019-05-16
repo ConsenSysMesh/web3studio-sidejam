@@ -1,6 +1,11 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ThemeProvider } from 'styled-components';
+import { Drizzle } from 'drizzle';
+import { drizzleReactHooks } from 'drizzle-react';
+import { Provider } from 'react-redux';
+import generateStore, { drizzleOptions } from './store/generateStore';
+import theme from './theme';
+import PlayField from './game/PlayField';
 
 /**
  * Root Component of the App
@@ -8,23 +13,19 @@ import './App.css';
  * @returns {React.Element} - Rendered app
  */
 function App() {
+  const store = generateStore();
+  const drizzle = new Drizzle(drizzleOptions, store);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <drizzleReactHooks.DrizzleProvider drizzle={drizzle}>
+        <ThemeProvider theme={theme}>
+          <drizzleReactHooks.Initializer>
+            <PlayField />
+          </drizzleReactHooks.Initializer>
+        </ThemeProvider>
+      </drizzleReactHooks.DrizzleProvider>
+    </Provider>
   );
 }
 

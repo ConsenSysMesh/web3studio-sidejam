@@ -2,16 +2,32 @@
   "name": "stratego-four",
   "version": "0.1.0",
   "private": true,
+  "author": "Web3Studio Developers <web3studio@consensys.net>",
+  "scripts": {
+    "start": "concurrently -n w: npm:start:*",
+    "start:ganache": "yarn ganache-cli -i 42 -d",
+    "start:web": "react-scripts start",
+    "start:migrate": "truffle migrate --reset --skip-dry-run --network=development --contracts_build_directory=$(pwd)/src/build/contracts",
+    "build": "react-scripts build",
+    "test": "yarn truffle build --contracts_build_directory=$(pwd)/src/build/contracts && CI=true yarn react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
+    "drizzle": "^1.4.0",
+    "drizzle-react": "^1.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1"
+    "react-redux": "^7.0.3",
+    "react-scripts": "3.0.1",
+    "redux": "^4.0.1",
+    "redux-saga": "^0.16.0",
+    "reselect": "^4.0.0",
+    "rimble-ui": "^0.8.0"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "CI=true react-scripts test",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "ganache-cli": "^6.4.3",
+    "styled-components": "^4.2.0"
   },
   "browserslist": {
     "production": [
