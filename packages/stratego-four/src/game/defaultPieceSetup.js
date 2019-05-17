@@ -1,5 +1,32 @@
-export default () => ({
-  red: [
+export const positions = {
+  A: 1,
+  B: 2,
+  C: 3,
+  D: 4,
+  E: 5,
+  F: 6,
+  G: 7,
+  H: 8,
+  I: 9,
+  J: 10,
+  K: 11,
+  L: 12,
+  M: 13,
+  N: 14,
+  O: 15
+};
+
+/**
+ * Map alphanumerical positions to numeric for contract and components
+ *
+ * @param {Array<Object>} positionList - List of x,y positions
+ * @returns {Array<Object>} a list of numeric x,y coordinates
+ */
+const mapToNumericalPositions = positionList =>
+  positionList.map(({ x, y }) => ({ x: positions[x], y }));
+
+export default {
+  red: mapToNumericalPositions([
     { x: 'E', y: '13' },
     { x: 'F', y: '13' },
     { x: 'G', y: '13' },
@@ -20,8 +47,8 @@ export default () => ({
     { x: 'I', y: '15' },
     { x: 'J', y: '15' },
     { x: 'K', y: '15' }
-  ],
-  yellow: [
+  ]),
+  yellow: mapToNumericalPositions([
     { x: 'M', y: '5' },
     { x: 'M', y: '6' },
     { x: 'M', y: '7' },
@@ -42,8 +69,8 @@ export default () => ({
     { x: 'O', y: '9' },
     { x: 'O', y: '10' },
     { x: 'O', y: '11' }
-  ],
-  blue: [
+  ]),
+  blue: mapToNumericalPositions([
     { x: 'E', y: '1' },
     { x: 'F', y: '1' },
     { x: 'G', y: '1' },
@@ -64,8 +91,8 @@ export default () => ({
     { x: 'I', y: '3' },
     { x: 'J', y: '3' },
     { x: 'K', y: '3' }
-  ],
-  green: [
+  ]),
+  green: mapToNumericalPositions([
     { x: 'A', y: '5' },
     { x: 'A', y: '6' },
     { x: 'A', y: '7' },
@@ -86,5 +113,5 @@ export default () => ({
     { x: 'C', y: '9' },
     { x: 'C', y: '10' },
     { x: 'C', y: '11' }
-  ]
-});
+  ])
+};

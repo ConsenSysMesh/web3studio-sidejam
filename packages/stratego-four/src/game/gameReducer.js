@@ -1,12 +1,6 @@
 const initialState = {
   cache: null,
-  player: null,
-  pieces: {
-    red: [],
-    yellow: [],
-    blue: [],
-    green: []
-  }
+  player: null
 };
 
 export const JOIN_GAME = 'stratego/game/JOIN_GAME';
@@ -70,6 +64,7 @@ const reducer = (state = initialState, action) => {
     case SET_PLAYER: {
       return {
         ...state,
+        cache: null,
         player: action.player
       };
     }

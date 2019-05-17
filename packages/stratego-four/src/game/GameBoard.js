@@ -2,6 +2,7 @@ import React from 'react';
 import { Box } from 'rimble-ui';
 import { red, yellow, green, blue, grey } from '../theme/colors';
 import GamePiece from './GamePiece';
+import { positions } from './defaultPieceSetup';
 
 const rectWidth = 100;
 
@@ -63,25 +64,6 @@ const Grid = ({ height, width, xOffset = 0, yOffset = 0, fill }) => (
   </>
 );
 
-// Map of labels to numbered positions
-const positions = {
-  A: 1,
-  B: 2,
-  C: 3,
-  D: 4,
-  E: 5,
-  F: 6,
-  G: 7,
-  H: 8,
-  I: 9,
-  J: 10,
-  K: 11,
-  L: 12,
-  M: 13,
-  N: 14,
-  O: 15
-};
-
 const borderColor = grey[600];
 
 export default ({ pieces, ...props }) => {
@@ -141,7 +123,7 @@ export default ({ pieces, ...props }) => {
           player.map(piece => (
             <GamePiece
               key={`${color}-{${piece.x},${piece.y}}`}
-              x={positions[piece.x] * rectWidth + 24}
+              x={piece.x * rectWidth + 24}
               y={piece.y * rectWidth + 20}
               color={color}
             />
