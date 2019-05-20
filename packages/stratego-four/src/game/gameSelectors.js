@@ -32,7 +32,7 @@ export const selectPlayer = createSelector(
 
 export const selectGameCache = createSelector(
   selectGame,
-  game => game.cache
+  game => game.cache || {}
 );
 
 /**
@@ -60,10 +60,10 @@ const selectCacheValue = key =>
  */
 const selectPlayerPieces = color =>
   createSelector(
-    selectGame,
+    selectGameCache,
     selectContract,
-    (game, contract) => {
-      const pieceCacheKeys = game.cache[`getPiece-${color}`] || [];
+    (gameCache, contract) => {
+      const pieceCacheKeys = gameCache[`getPiece-${color}`] || [];
 
       return pieceCacheKeys
         .map(cacheKey => contract.getPiece[cacheKey])

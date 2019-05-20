@@ -25,8 +25,8 @@ const PlayField = ({ pieces, currentPlayers, accounts, switchAccount }) => {
   );
 
   return (
-    <Flex flexWrap="wrap">
-      <Box width={[1, 1, 1, 7 / 12, 8 / 12]}>
+    <Flex flexWrap="wrap" justifyContent="space-around">
+      <Box width={[1, 1, 1, 7 / 12, 8 / 12]} maxWidth={'45em'}>
         <GameBoard pieces={pieces} />
       </Box>
       <Box width={[1, 1, 1, 5 / 12, 4 / 12]}>
