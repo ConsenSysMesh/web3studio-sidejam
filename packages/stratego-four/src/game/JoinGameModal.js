@@ -37,6 +37,7 @@ const JoinGameModal = ({ modalOpen, joinGame }) => {
           <Heading.h3>Enter a Game</Heading.h3>
           <Form.Field label="Game ID">
             <Form.Input
+              autoFocus={true}
               type="text"
               required={true}
               onChange={updateGameIdValue}
