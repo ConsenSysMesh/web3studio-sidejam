@@ -11,18 +11,19 @@
 
 This repo holds the code and development assets for a Stratego4 implementation with SideJame tech.
 
-## Available Scripts
+## Development
 
-In the project directory, you can run:
+This project uses Pantheon for local development. To start up the environment, run `yarn pantheon`. This will spin up pantheon configured for development. Pantheon only needs to be started once. When you're done, you can stop it with `yarn pantheon:down`.
 
-### `yarn start`
+You can also see a block explorer by visiting [localhost:8080](http://localhost:8080).
 
-Runs the app in the development mode.<br>
+Once started, run `yarn start` too see the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-It's recommended that you disable MetaMask or any in-browser web3 clients as the dev environment assumes connecting to the default accounts from Ganache.
+It's recommended that you disable MetaMask or any in-browser web3 clients as the dev environment assumes connecting to the default accounts from Pantheon.
 
-The page will reload if you make edits.<br>
+The page will reload if you make edits.
+
 You will also see any lint errors in the console.
 
 ## License

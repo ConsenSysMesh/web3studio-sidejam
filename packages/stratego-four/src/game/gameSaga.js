@@ -38,14 +38,14 @@ function* initializePlayer({ player }) {
   yield put(
     setCacheKey(
       'currentGame',
-      stratego4.methods.currentGame.cacheCall(player, ops)
+      stratego4.methods.currentGame.cacheCall(player, { ...ops })
     )
   );
 
   yield put(
     setCacheKey(
       'currentPlayers',
-      stratego4.methods.currentPlayers.cacheCall(player, ops)
+      stratego4.methods.currentPlayers.cacheCall(player, { ...ops })
     )
   );
 }
@@ -117,11 +117,11 @@ export function* updatePieceCache(pieces, playerAddress) {
     setCacheKey(
       gameCacheKey,
       pieces.map(piece => {
-        const args = [playerAddress, piece, ops];
+        const args = [playerAddress, piece, { ...ops }];
         const cacheKey = stratego4.generateArgsHash(args);
 
         if (!currentPieceCache.includes(cacheKey)) {
-          stratego4.methods.getPiece.cacheCall(playerAddress, piece, ops);
+          stratego4.methods.getPiece.cacheCall(...args);
         }
 
         return cacheKey;
@@ -165,7 +165,7 @@ export function* handleGotCurrentPlayers(action) {
   const currentPlayers = action.value;
 
   currentPlayers.forEach(player =>
-    stratego4.methods.playerPieces.cacheCall(player, ops)
+    stratego4.methods.playerPieces.cacheCall(player, { ...ops })
   );
 }
 
@@ -220,5 +220,4 @@ export default function* gameSaga() {
   // Our events
   yield takeEvery(SET_PLAYER, initializePlayer);
   yield takeEvery(JOIN_GAME, joinGame);
-  yield takeEvery(SET_PLAYER, initializePlayer);
 }
