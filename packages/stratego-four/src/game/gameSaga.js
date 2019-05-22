@@ -1,5 +1,11 @@
 import { takeLatest, takeEvery, put, select } from 'redux-saga/effects';
-import { setCacheKey, setPlayer, JOIN_GAME, SET_PLAYER } from './gameReducer';
+import {
+  setCacheKey,
+  setPlayer,
+  JOIN_GAME,
+  SET_PLAYER,
+  MOVE_PIECE
+} from './gameReducer';
 import {
   selectAccounts,
   selectPlayerColor,
@@ -46,6 +52,13 @@ function* initializePlayer({ player }) {
     setCacheKey(
       'currentPlayers',
       stratego4.methods.currentPlayers.cacheCall(player, { ...ops })
+    )
+  );
+
+  yield put(
+    setCacheKey(
+      'isPlayersTurn',
+      stratego4.methods.isPlayersTurn.cacheCall(player, { ...ops })
     )
   );
 }
@@ -196,16 +209,27 @@ export function* handleGotContractVar(action) {
  */
 export function* joinGame({ gameId }) {
   const ops = yield defaultTxOps();
-  const player = yield select(selectPlayer);
   const gameKey = web3.utils.asciiToHex(gameId);
 
   stratego4.methods.joinGame.cacheSend(gameKey, {
     ...ops,
     gas: 150000
   });
+}
 
-  // Re-initialize player to get the cache in order
-  yield put(setPlayer(player));
+/**
+ * A player has joined the a game
+ *
+ * @param {string} gameId - Game ID to join, from the action
+ */
+export function* movePiece({ x, y, rankHash }) {
+  const ops = yield defaultTxOps();
+  const player = yield select(selectPlayer);
+
+  stratego4.methods.movePiece.cacheSend(player, x, y, rankHash, {
+    ...ops,
+    gas: 150000
+  });
 }
 
 /**
@@ -220,4 +244,5 @@ export default function* gameSaga() {
   // Our events
   yield takeEvery(SET_PLAYER, initializePlayer);
   yield takeEvery(JOIN_GAME, joinGame);
+  yield takeEvery(MOVE_PIECE, movePiece);
 }

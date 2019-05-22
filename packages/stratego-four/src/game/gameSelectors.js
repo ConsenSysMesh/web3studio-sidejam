@@ -35,6 +35,10 @@ export const selectGameCache = createSelector(
   game => game.cache || {}
 );
 
+export const selectSelectedPiece = createSelector(
+  selectGame,
+  game => game.selectedPiece
+);
 /**
  * Create a selector for a cached function
  *
@@ -72,13 +76,15 @@ const selectPlayerPieces = color =>
           x: value[0],
           y: value[1],
           isFlagCarrier: value[2],
-          rank: value[3]
+          rank: value[3],
+          rankHash: value[4]
         }));
     }
   );
 
 export const selectCurrentGameId = selectCacheValue('currentGame');
 export const selectCurrentPlayers = selectCacheValue('currentPlayers');
+export const selectIsPlayersTurn = selectCacheValue('isPlayersTurn');
 
 export const selectRedPlayerPieces = selectPlayerPieces('red');
 export const selectGreenPlayerPieces = selectPlayerPieces('green');
