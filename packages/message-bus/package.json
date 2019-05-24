@@ -10,14 +10,20 @@
     "url": "git+https://github.com/ConsenSys/web3studio-sidejam.git"
   },
   "scripts": {
-    "build": "yarn buidl",
-    "buidl": "truffle compile",
+    "test": "truffle-test",
+    "build": "truffle compile",
     "migrate": "truffle migrate --reset",
     "truffle": "truffle"
   },
   "bugs": {
     "url": "https://github.com/ConsenSys/web3studio-sidejam/issues"
   },
-  "dependencies": {},
+  "bin": {
+    "truffle-test": "./bin/truffle-test"
+  },
+  "dependencies": {
+    "istanbul": "^0.4.5",
+    "jest-matchers": "^20.0.3"
+  },
   "devDependencies": {}
 }
