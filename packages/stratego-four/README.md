@@ -13,7 +13,9 @@ This repo holds the code and development assets for a Stratego4 implementation w
 
 ## Development
 
-This project uses Pantheon for local development. To start up the environment, run `yarn pantheon`. This will spin up pantheon configured for development. Pantheon only needs to be started once. When you're done, you can stop it with `yarn pantheon:down`.
+This project uses Geth for local development. To start up the environment, run `yarn up geth`. This will spin up geth configured for development. A Blockchain only needs to be started once. When you're done, you can stop it with `yarn down`.
+
+If you want to use (ganache|pantheon) instead, use `yarn up <name>`. Just in case you wanted to test it on different chains.
 
 You can also see a block explorer by visiting [localhost:8080](http://localhost:8080).
 

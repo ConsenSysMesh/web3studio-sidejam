@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Box } from 'rimble-ui';
 import { red, yellow, green, blue, grey } from '../theme/colors';
 import GamePiece from './GamePiece';
@@ -17,22 +17,28 @@ const rectWidth = 100;
  *
  * @returns {React.Element} - Rendered row
  */
-const Row = ({ width, xOffset, yOffset, fill }) => (
+const Row = ({ width, xOffset, yOffset, fill, onSpaceClick }) => (
   <>
     {Array(width)
       .fill('')
-      .map((value, index) => (
-        <rect
-          key={`rect-${xOffset}-${index}`}
-          x={xOffset * rectWidth + index * rectWidth}
-          y={yOffset * rectWidth}
-          width={rectWidth}
-          height={rectWidth}
-          fill={fill}
-          stroke={grey[600]}
-          strokeWidth={2}
-        />
-      ))}
+      .map((value, index) => {
+        const x = xOffset + index;
+        const y = yOffset;
+
+        return (
+          <rect
+            onClick={onSpaceClick(x, y)}
+            key={`rect-${xOffset}-${index}`}
+            x={x * rectWidth}
+            y={y * rectWidth}
+            width={rectWidth}
+            height={rectWidth}
+            fill={fill}
+            stroke={grey[600]}
+            strokeWidth={2}
+          />
+        );
+      })}
   </>
 );
 
@@ -48,7 +54,14 @@ const Row = ({ width, xOffset, yOffset, fill }) => (
  *
  * @returns {React.Element} - Rendered grid
  */
-const Grid = ({ height, width, xOffset = 0, yOffset = 0, fill }) => (
+const Grid = ({
+  height,
+  width,
+  xOffset = 0,
+  yOffset = 0,
+  fill,
+  onSpaceClick
+}) => (
   <>
     {Array(height)
       .fill('')
@@ -59,6 +72,7 @@ const Grid = ({ height, width, xOffset = 0, yOffset = 0, fill }) => (
           xOffset={xOffset}
           yOffset={yOffset + index}
           fill={fill}
+          onSpaceClick={onSpaceClick}
         />
       ))}
   </>
@@ -66,12 +80,29 @@ const Grid = ({ height, width, xOffset = 0, yOffset = 0, fill }) => (
 
 const borderColor = grey[600];
 
-export default ({ pieces, ...props }) => {
+const boardConfig = [
+  { x: 4, y: 4, height: 9, width: 9, fill: grey[50] }, // Center
+  { x: 5, y: 13, height: 3, width: 7, fill: red[100] }, // Red
+  { x: 5, y: 1, height: 3, width: 7, fill: blue[100] }, // Blue
+  { x: 1, y: 5, height: 7, width: 3, fill: green[100] }, // Green
+  { x: 13, y: 5, height: 7, width: 3, fill: yellow[100] } // Yellow
+];
+
+export default memo(({ pieces, selectedPiece, onSpaceClick, ...props }) => {
+  /**
+   * Handler generator for when a space is clicked
+   *
+   * @param {Array} params - parameters to pass
+   * @returns {Function} - the actual handler
+   */
+  const handleSpaceClick = (...params) => () => onSpaceClick(...params);
+
   return (
     <Box {...props}>
       <svg
         height={'100%'}
         width={'100%'}
+        style={{ maxHeight: '100vh' }}
         viewBox="0 0 1700 1700"
         preserveAspectRatio="xMidYMid meet"
         fill="none"
@@ -82,24 +113,19 @@ export default ({ pieces, ...props }) => {
           font: bold 30px 'Source Sans Pro'; 
           fill: ${grey[800]};
         }
-      `}</style>
+        `}</style>
 
-        {/*Center Board*/}
-        <Grid xOffset={4} yOffset={4} height={9} width={9} fill={grey[50]} />
-        {/* Blue Player*/}
-        <Grid xOffset={5} yOffset={1} height={3} width={7} fill={blue[100]} />
-        {/* Green Player*/}
-        <Grid xOffset={1} yOffset={5} height={7} width={3} fill={green[100]} />
-        {/* Yellow Player*/}
-        <Grid
-          xOffset={13}
-          yOffset={5}
-          height={7}
-          width={3}
-          fill={yellow[100]}
-        />
-        {/* Red Player*/}
-        <Grid xOffset={5} yOffset={13} height={3} width={7} fill={red[100]} />
+        {boardConfig.map(grid => (
+          <Grid
+            key={grid.x + '-' + grid.y}
+            xOffset={grid.x}
+            yOffset={grid.y}
+            height={grid.height}
+            width={grid.width}
+            fill={grid.fill}
+            onSpaceClick={handleSpaceClick}
+          />
+        ))}
 
         <circle
           cx="850"
@@ -123,13 +149,16 @@ export default ({ pieces, ...props }) => {
           player.map(piece => (
             <GamePiece
               key={`${color}-{${piece.x},${piece.y}}`}
-              x={piece.x * rectWidth + 24}
-              y={piece.y * rectWidth + 20}
+              isSelected={piece.rankHash === selectedPiece}
+              x={piece.x * rectWidth}
+              y={piece.y * rectWidth}
               color={color}
+              onClick={handleSpaceClick(piece.x, piece.y, piece.rankHash)}
             />
           ))
         )}
 
+        {/* Board Space numberings */}
         {Object.entries(positions).map(([label, pos]) => {
           const offset = (pos - 1) * rectWidth + rectWidth * 1.5;
           const fixed = 40;
@@ -161,4 +190,4 @@ export default ({ pieces, ...props }) => {
       </svg>
     </Box>
   );
-};
+});

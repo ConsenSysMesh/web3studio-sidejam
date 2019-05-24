@@ -4,12 +4,12 @@ const privateKey =
 
 module.exports = {
   networks: {
-    pantheon: {
+    dev: {
       provider: () =>
         new TruffleHDWalletProvider(privateKey, 'http://localhost:8545'),
       network_id: '*',
       gasPrice: 0,
-      gas: '0x1ffffffffffffe'
+      gas: '0x5fdfb1'
     }
   }
 };
