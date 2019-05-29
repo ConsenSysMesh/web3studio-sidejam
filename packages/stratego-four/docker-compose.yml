@@ -31,7 +31,7 @@ services:
     image: trufflesuite/ganache-cli
     ports:
       - 8545:8545
-      - 8546:8546
+      - 8546:8545
     command:
       - --gasPrice=0
 

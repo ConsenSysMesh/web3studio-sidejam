@@ -4,7 +4,7 @@ const mnemonic =
 
 export default {
   contracts: [require('../build/contracts/Stratego4')],
-
+  events: ['PieceMoved'],
   web3: {
     web3: {
       customProvider: pantheonProvider(mnemonic)

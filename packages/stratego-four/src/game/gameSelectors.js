@@ -56,40 +56,10 @@ const selectCacheValue = key =>
     }
   );
 
-/**
- * Create a selector for a player color's pieces
- *
- * @param {string} color - The player color
- * @returns {Function} - Cache selector
- */
-const selectPlayerPieces = color =>
-  createSelector(
-    selectGameCache,
-    selectContract,
-    (gameCache, contract) => {
-      const pieceCacheKeys = gameCache[`getPiece-${color}`] || [];
-
-      return pieceCacheKeys
-        .map(cacheKey => contract.getPiece[cacheKey])
-        .filter(cache => cache)
-        .map(({ value }) => ({
-          x: value[0],
-          y: value[1],
-          isFlagCarrier: value[2],
-          rank: value[3],
-          rankHash: value[4]
-        }));
-    }
-  );
-
 export const selectCurrentGameId = selectCacheValue('currentGame');
 export const selectCurrentPlayers = selectCacheValue('currentPlayers');
 export const selectIsPlayersTurn = selectCacheValue('isPlayersTurn');
-
-export const selectRedPlayerPieces = selectPlayerPieces('red');
-export const selectGreenPlayerPieces = selectPlayerPieces('green');
-export const selectBluePlayerPieces = selectPlayerPieces('blue');
-export const selectYellowPlayerPieces = selectPlayerPieces('yellow');
+export const selectGamePieces = selectCacheValue('getGamePieces');
 
 const playerColors = new Map([
   [-1, ''],
@@ -117,10 +87,46 @@ export const selectPlayerColor = createSelector(
     (players.find(player => player.address === playerAddress) || {}).color
 );
 
+/**
+ * Create an initial empty board state
+ *
+ * @returns {Object} An Empty board
+ */
+const initialBoard = () => ({
+  red: [],
+  green: [],
+  blue: [],
+  yellow: []
+});
+
 export const selectPieces = createSelector(
-  selectRedPlayerPieces,
-  selectGreenPlayerPieces,
-  selectBluePlayerPieces,
-  selectYellowPlayerPieces,
-  (red, green, blue, yellow) => ({ red, green, blue, yellow })
+  selectGamePieces,
+  selectCurrentPlayerColors,
+  (gamePieces, playerColors) => {
+    if (!gamePieces) {
+      return initialBoard();
+    }
+
+    return gamePieces[0]
+      .map((x, index) => ({
+        x: gamePieces[0][index],
+        y: gamePieces[1][index],
+        isFlagCarrier: gamePieces[2][index],
+        rank: gamePieces[3][index],
+        rankHash: gamePieces[4][index],
+        player: gamePieces[5][index]
+      }))
+      .filter(piece => piece.x !== '0')
+      .reduce((board, piece) => {
+        const color = (
+          playerColors.find(player => player.address === piece.player) || {}
+        ).color;
+
+        if (color) {
+          board[color].push(piece);
+        }
+
+        return board;
+      }, initialBoard());
+  }
 );
