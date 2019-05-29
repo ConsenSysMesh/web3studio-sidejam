@@ -10,8 +10,7 @@ import {
   selectAccounts,
   selectPlayerColor,
   selectPlayer,
-  selectCurrentPlayerColors,
-  selectGameCache
+  selectPieces
 } from './gameSelectors';
 import defaultPieceSetup from './defaultPieceSetup';
 
@@ -61,6 +60,13 @@ function* initializePlayer({ player }) {
       stratego4.methods.isPlayersTurn.cacheCall(player, { ...ops })
     )
   );
+
+  yield put(
+    setCacheKey(
+      'getGamePieces',
+      stratego4.methods.getGamePieces.cacheCall(player, { ...ops })
+    )
+  );
 }
 
 /**
@@ -105,55 +111,16 @@ export function* initializePlayerPieces() {
     );
   });
 }
-
-/**
- * Update the piece cache for a player
- *
- * @param {Array<string>} pieces - Array of piece rank hashes
- * @param {string} playerAddress - Address of player to update
- */
-export function* updatePieceCache(pieces, playerAddress) {
-  const ops = yield defaultTxOps();
-  const playerColors = yield select(selectCurrentPlayerColors);
-  const gameCache = yield select(selectGameCache);
-  const player = playerColors.find(player => player.address === playerAddress);
-
-  if (!player) {
-    // Skip if a player isn't found. Happens when changing to a new game
-    return;
-  }
-
-  const gameCacheKey = `getPiece-${player.color}`;
-  const currentPieceCache = gameCache[gameCacheKey] || [];
-
-  yield put(
-    setCacheKey(
-      gameCacheKey,
-      pieces.map(piece => {
-        const args = [playerAddress, piece, { ...ops }];
-        const cacheKey = stratego4.generateArgsHash(args);
-
-        if (!currentPieceCache.includes(cacheKey)) {
-          stratego4.methods.getPiece.cacheCall(...args);
-        }
-
-        return cacheKey;
-      })
-    )
-  );
-}
-
 /**
  * Handle when drizzle receives player piece rank hashes
  *
  * @param {Object} action - redux action
  */
-export function* handleGotPlayerPieces(action) {
+export function* handleGotGamePieces(action) {
   const player = yield select(selectPlayer);
   const actionPlayer = action.args[0];
   const playerColor = yield select(selectPlayerColor);
-  const pieces = action.value;
-  const isAlreadySetup = pieces.length > 0;
+  const gamePieces = yield select(selectPieces);
 
   const isCurrentPlayer = actionPlayer === player;
 
@@ -161,25 +128,12 @@ export function* handleGotPlayerPieces(action) {
     return;
   }
 
+  const pieces = gamePieces[playerColor];
+  const isAlreadySetup = pieces.length > 0;
+
   if (isCurrentPlayer && !isAlreadySetup) {
     yield initializePlayerPieces();
   }
-
-  yield updatePieceCache(pieces, actionPlayer);
-}
-
-/**
- * Handle when drizzle receives current player addresses
- *
- * @param {Object} action - Redux action
- */
-export function* handleGotCurrentPlayers(action) {
-  const ops = yield defaultTxOps();
-  const currentPlayers = action.value;
-
-  currentPlayers.forEach(player =>
-    stratego4.methods.playerPieces.cacheCall(player, { ...ops })
-  );
 }
 
 /**
@@ -189,19 +143,14 @@ export function* handleGotCurrentPlayers(action) {
  */
 export function* handleGotContractVar(action) {
   switch (action.variable) {
-    case 'playerPieces':
-      yield handleGotPlayerPieces(action);
-      break;
-
-    case 'currentPlayers':
-      yield handleGotCurrentPlayers(action);
+    case 'getGamePieces':
+      yield handleGotGamePieces(action);
       break;
 
     default:
       break;
   }
 }
-
 /**
  * A player has joined the a game
  *

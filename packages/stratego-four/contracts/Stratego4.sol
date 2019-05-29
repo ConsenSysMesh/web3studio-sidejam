@@ -3,6 +3,10 @@ pragma solidity ^0.5.0;
 contract Stratego4 {
   enum GameState { Joining, AddingPieces, InProgress, Finished }
 
+  event PieceMoved (
+    bytes32 rankHash
+  );
+
   struct Piece {
     uint8 x;
     uint8 y;
@@ -65,12 +69,6 @@ contract Stratego4 {
     return game.playerAddresses;
   }
 
-  function playerPieces(address playerAddress) public view returns(bytes32[] memory) {
-    Game storage game = _currentGame(playerAddress);
-
-    return game.players[playerAddress].pieceRankHashes;
-  }
-
   function isPlayersTurn(address playerAddress) public view returns(bool) {
     Game storage game = _currentGame(playerAddress);
 
@@ -98,6 +96,8 @@ contract Stratego4 {
     game.pieceLocations[x][y] = rankHash;
     piece.x = x;
     piece.y = y;
+
+    emit PieceMoved(rankHash);
   }
 
   function addPiece(address playerAddress, uint8 x, uint8 y, bytes32 rankHash, bool isFlagCarrier) public {
@@ -140,5 +140,37 @@ contract Stratego4 {
     Piece storage piece = player.pieces[rankHash];
 
     return (piece.x, piece.y, piece.isFlagCarrier, piece.rank, rankHash);
+  }
+
+  function getGamePieces(address playerAddress) public view
+    returns(uint8[80] memory, uint8[80] memory, bool[80] memory, uint8[80] memory, bytes32[80] memory, address[80] memory)
+  {
+    uint8[80] memory xs;
+    uint8[80] memory ys;
+    bool[80] memory isFlagCarriers;
+    uint8[80] memory ranks;
+    bytes32[80] memory rankHashes;
+    address[80] memory players;
+    Game storage game = _currentGame(playerAddress);
+
+    for (uint i = 0; i < game.playerAddresses.length; i += 1) {
+      address playerIAddress = game.playerAddresses[i];
+      Player storage player = game.players[playerIAddress];
+
+      for (uint j = 0; j < player.pieceRankHashes.length; j += 1) {
+        bytes32 rankHash = player.pieceRankHashes[j];
+        Piece storage piece = player.pieces[rankHash];
+        uint returnIndex = i * 20 + j;
+
+        xs[returnIndex] = piece.x;
+        ys[returnIndex] = piece.y;
+        isFlagCarriers[returnIndex] = piece.isFlagCarrier;
+        ranks[returnIndex] = piece.rank;
+        rankHashes[returnIndex] = rankHash;
+        players[returnIndex] = playerIAddress;
+      }
+    }
+
+    return (xs, ys, isFlagCarriers, ranks, rankHashes, players);
   }
 }
