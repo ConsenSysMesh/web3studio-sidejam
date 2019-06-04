@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "test": "yarn lint && yarn test:packages",
-    "test:packages": "lerna run test --concurrency 1",
+    "test:packages": "lerna run test --concurrency 1 --stream",
     "lint": "yarn eslint . && yarn solium -d .",
     "prettier": "prettier \"**/*.{js,json,css,md}\" --write"
   },
