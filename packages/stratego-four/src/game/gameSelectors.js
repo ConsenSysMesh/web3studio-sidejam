@@ -3,24 +3,24 @@ import { createSelector } from 'reselect';
 /**
  * Select the Game object from state
  *
- * @param {Object} state - Redux state
- * @returns {Object} the game
+ * @param {object} state - Redux state
+ * @returns {object} the game
  */
 export const selectGame = state => state.game;
 
 /**
  * Select the Stratego contract from state
  *
- * @param {Object} state - Redux state
- * @returns {Object} stratego contract
+ * @param {object} state - Redux state
+ * @returns {object} stratego contract
  */
 export const selectContract = state => state.contracts.Stratego4;
 
 /**
  * Select the web3 accounts from state
  *
- * @param {Object} state - Redux state
- * @returns {Object} provider accounts
+ * @param {object} state - Redux state
+ * @returns {object} provider accounts
  */
 export const selectAccounts = state =>
   Object.entries(state.accounts || []).map(([label, address]) => address);
@@ -90,7 +90,7 @@ export const selectPlayerColor = createSelector(
 /**
  * Create an initial empty board state
  *
- * @returns {Object} An Empty board
+ * @returns {object} An Empty board
  */
 const initialBoard = () => ({
   red: [],

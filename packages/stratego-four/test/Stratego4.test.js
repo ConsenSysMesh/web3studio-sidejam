@@ -22,7 +22,7 @@ contract('Stratego4', accounts => {
    *
    * @param {string} player - Player address
    * @param {string} rankHash - rank hash of player's piece
-   * @param {Object} expected - expected result of the piece
+   * @param {object} expected - expected result of the piece
    */
   const expectPiece = async (player, rankHash, expected) => {
     const piece = await contract.getPiece(player, rankHash);

@@ -9,7 +9,7 @@ const rectWidth = 100;
 /**
  * Render a row of svg Boxes
  *
- * @param {Object} props - element props
+ * @param {object} props - element props
  * @param {number} props.width - number of rectangles wide
  * @param {number} props.xOffset - number of rectangles to offset on the x
  * @param {number} props.yOffset - number of rectangles to offset on the y
@@ -45,7 +45,7 @@ const Row = ({ width, xOffset, yOffset, fill, onSpaceClick }) => (
 /**
  * Render a grid of svg Boxes
  *
- * @param {Object} props - element props
+ * @param {object} props - element props
  * @param {number} props.height - number of rectangles height
  * @param {number} props.width - number of rectangles wide
  * @param {number} props.xOffset - number of rectangles to offset on the x

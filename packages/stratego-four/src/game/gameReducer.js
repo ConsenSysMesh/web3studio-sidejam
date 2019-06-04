@@ -20,7 +20,7 @@ export const joinGame = gameId => ({
  *
  * @param {string} key - key name
  * @param {string} value - cache key
- * @returns {Object} Redux Action
+ * @returns {object} Redux Action
  */
 export const setCacheKey = (key, value) => ({
   type: SET_CACHE_KEY,
@@ -74,9 +74,9 @@ const initialState = {
 /**
  * Redux reducer for game state
  *
- * @param {Object} state - current state
- * @param {Object} action - Action mutating state
- * @returns {Object} new state
+ * @param {object} state - current state
+ * @param {object} action - Action mutating state
+ * @returns {object} new state
  */
 const reducer = (state = initialState, action) => {
   switch (action.type) {

@@ -1,7 +1,6 @@
-pragma solidity ^0.5.0;
+pragma solidity 0.5.8;
 
 contract MessageReceiver {
-
   // Each receiver manages messages for only one topic
   string public topicName;
   // Message key to message mapping for look-up
@@ -22,7 +21,7 @@ contract MessageReceiver {
   *
   * @param topic string The topic name for the messages
   */
-  constructor (string memory topic) public {
+  constructor(string memory topic) public {
     topicName = topic;
   }
 
@@ -37,24 +36,28 @@ contract MessageReceiver {
     messages[key].sender = msg.sender;
     messages[key].message = newMessage;
 
-    emit MessageReceived(topicName, msg.sender, key); 
+    emit MessageReceived(topicName, msg.sender, key);
   }
 
   /**
   * @notice Gets the count of the messages sent to this topic
-  * 
+  *
   * @return uint256 Count of messages
   */
-  function getMessageCount() public view returns(uint256) {
+  function getMessageCount() public view returns (uint256) {
     return messageList.length;
   }
 
   /**
   * @notice Gets a message given a key
   *
-  * @return address, string Returns the sender address and message contents 
+  * @return address, string Returns the sender address and message contents
   */
-  function getMessage(bytes32 key) public view returns (address, string memory) {
+  function getMessage(bytes32 key)
+    public
+    view
+    returns (address, string memory)
+  {
     return (messages[key].sender, messages[key].message);
   }
 }

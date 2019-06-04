@@ -1,11 +1,9 @@
-pragma solidity ^0.5.0;
+pragma solidity 0.5.8;
 
 contract Stratego4 {
-  enum GameState { Joining, AddingPieces, InProgress, Finished }
+  enum GameState {Joining, AddingPieces, InProgress, Finished}
 
-  event PieceMoved (
-    bytes32 rankHash
-  );
+  event PieceMoved(bytes32 rankHash);
 
   struct Piece {
     uint8 x;
@@ -29,14 +27,18 @@ contract Stratego4 {
     GameState state;
   }
 
-  mapping (uint => Game) public games;
-  mapping (address => uint) public playerGames;
+  mapping(uint => Game) public games;
+  mapping(address => uint) public playerGames;
 
-  function currentGame(address player) public view returns(uint) {
+  function currentGame(address player) public view returns (uint) {
     return playerGames[player];
   }
 
-  function _currentGame(address playerAddress) internal view returns(Game storage) {
+  function _currentGame(address playerAddress)
+    internal
+    view
+    returns (Game storage)
+  {
     uint gameId = currentGame(playerAddress);
 
     return games[gameId];
@@ -63,19 +65,25 @@ contract Stratego4 {
     }
   }
 
-  function currentPlayers(address playerAddress) public view returns(address[] memory) {
+  function currentPlayers(address playerAddress)
+    public
+    view
+    returns (address[] memory)
+  {
     Game storage game = _currentGame(playerAddress);
 
     return game.playerAddresses;
   }
 
-  function isPlayersTurn(address playerAddress) public view returns(bool) {
+  function isPlayersTurn(address playerAddress) public view returns (bool) {
     Game storage game = _currentGame(playerAddress);
 
     return game.state == GameState.InProgress && game.playerAddresses[game.turn % 4] == playerAddress;
   }
 
-  function movePiece(address playerAddress, uint8 x, uint8 y, bytes32 rankHash) public {
+  function movePiece(address playerAddress, uint8 x, uint8 y, bytes32 rankHash)
+    public
+  {
     require(playerAddress == msg.sender, "You can only move your piece");
 
     Game storage game = _currentGame(playerAddress);
@@ -85,7 +93,10 @@ contract Stratego4 {
     require(game.pieceLocations[x][y] == "", "Piece location must be empty");
 
     if (game.state == GameState.InProgress) {
-      require(isPlayersTurn(playerAddress), "You can only move during your turn");
+      require(
+        isPlayersTurn(playerAddress),
+        "You can only move during your turn"
+      );
       game.turn += 1;
     }
 
@@ -100,7 +111,13 @@ contract Stratego4 {
     emit PieceMoved(rankHash);
   }
 
-  function addPiece(address playerAddress, uint8 x, uint8 y, bytes32 rankHash, bool isFlagCarrier) public {
+  function addPiece(
+    address playerAddress,
+    uint8 x,
+    uint8 y,
+    bytes32 rankHash,
+    bool isFlagCarrier
+  ) public {
     require(playerAddress == msg.sender, "You can only add your own piece");
 
     uint gameId = currentGame(playerAddress);
@@ -108,7 +125,10 @@ contract Stratego4 {
     Player storage player = game.players[playerAddress];
     Piece memory piece;
 
-    require(player.pieceRankHashes.length < 20, "All pieces have already been added");
+    require(
+      player.pieceRankHashes.length < 20,
+      "All pieces have already been added"
+    );
     require(player.hasJoined == true, "Not in this game");
 
     piece.isFlagCarrier = isFlagCarrier;
@@ -117,24 +137,32 @@ contract Stratego4 {
 
     movePiece(playerAddress, x, y, rankHash);
 
-    if (
-      game.playerAddresses.length == 4 &&
-      _playerPieceCount(gameId, 0) == 20 &&
-      _playerPieceCount(gameId, 1) == 20 &&
-      _playerPieceCount(gameId, 2) == 20 &&
-      _playerPieceCount(gameId, 3) == 20
-    ) {
+    if (game.playerAddresses.length == 4 && _playerPieceCount(
+      gameId,
+      0
+    ) == 20 && _playerPieceCount(gameId, 1) == 20 && _playerPieceCount(
+      gameId,
+      2
+    ) == 20 && _playerPieceCount(gameId, 3) == 20) {
       game.state = GameState.InProgress;
     }
   }
 
-  function _playerPieceCount(uint gameId, uint8 playerIndex) private view returns(uint) {
+  function _playerPieceCount(uint gameId, uint8 playerIndex)
+    private
+    view
+    returns (uint)
+  {
     Game storage game = games[gameId];
 
     return game.players[game.playerAddresses[playerIndex]].pieceRankHashes.length;
   }
 
-  function getPiece(address playerAddress, bytes32 rankHash) public view returns(uint8, uint8, bool, uint8, bytes32) {
+  function getPiece(address playerAddress, bytes32 rankHash)
+    public
+    view
+    returns (uint8, uint8, bool, uint8, bytes32)
+  {
     Game storage game = _currentGame(playerAddress);
     Player storage player = game.players[playerAddress];
     Piece storage piece = player.pieces[rankHash];
@@ -142,8 +170,17 @@ contract Stratego4 {
     return (piece.x, piece.y, piece.isFlagCarrier, piece.rank, rankHash);
   }
 
-  function getGamePieces(address playerAddress) public view
-    returns(uint8[80] memory, uint8[80] memory, bool[80] memory, uint8[80] memory, bytes32[80] memory, address[80] memory)
+  function getGamePieces(address playerAddress)
+    public
+    view
+    returns (
+    uint8[80] memory,
+    uint8[80] memory,
+    bool[80] memory,
+    uint8[80] memory,
+    bytes32[80] memory,
+    address[80] memory
+  )
   {
     uint8[80] memory xs;
     uint8[80] memory ys;

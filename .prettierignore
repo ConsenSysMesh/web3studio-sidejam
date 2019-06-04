@@ -1,5 +1,6 @@
 **/coverage/
 **/build/
+**/.0x-artifacts/
 **/node_modules/
 
 **/coverage.json

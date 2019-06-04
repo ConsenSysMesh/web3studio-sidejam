@@ -19,8 +19,8 @@ export const positions = {
 /**
  * Map alphanumerical positions to numeric for contract and components
  *
- * @param {Array<Object>} positionList - List of x,y positions
- * @returns {Array<Object>} a list of numeric x,y coordinates
+ * @param {Array<object>} positionList - List of x,y positions
+ * @returns {Array<object>} a list of numeric x,y coordinates
  */
 const mapToNumericalPositions = positionList =>
   positionList.map(({ x, y }) => ({ x: positions[x], y }));

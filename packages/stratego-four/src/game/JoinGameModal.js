@@ -7,7 +7,7 @@ import { joinGame } from './gameReducer';
 /**
  * Renders a modal to join a specific game
  *
- * @param {Object} props - React props
+ * @param {object} props - React props
  * @param {boolean} props.modalOpen - should the modal be open?
  * @param {Function} props.joinGame - Join Game action
  * @returns {React.Component} - A React Component
@@ -53,8 +53,8 @@ const JoinGameModal = ({ modalOpen, joinGame }) => {
 /**
  * Maps redux state to React properties
  *
- * @param {Object} state - Redux State
- * @returns {Object} Properties applied to the element
+ * @param {object} state - Redux State
+ * @returns {object} Properties applied to the element
  */
 const mapStateToProps = state => {
   const gameId = selectCurrentGameId(state);

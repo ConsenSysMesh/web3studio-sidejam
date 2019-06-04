@@ -4,23 +4,22 @@
   "scripts": {
     "test": "yarn lint && yarn test:packages",
     "test:packages": "lerna run test --concurrency 1 --stream",
-    "lint": "yarn eslint . && yarn solium -d .",
-    "prettier": "prettier \"**/*.{js,json,css,md}\" --write"
+    "lint": "yarn lint:js && yarn lint:sol",
+    "lint:js": "eslint .",
+    "lint:sol": "solhint \"**/*.sol\" -f stylish",
+    "prettier": "prettier \"**/*.{js,json,css,md,sol,yml}\" --write"
   },
   "devDependencies": {
-    "@0x/sol-coverage": "^3.0.4",
-    "@0x/sol-trace": "^2.0.4",
     "dotenv": "^6.2.0",
     "eslint": "^5.16.0",
-    "eslint-config-web3studio": "^1.2.0",
+    "eslint-config-web3studio": "^3.0.0",
     "husky": "^2.2.0",
-    "jest-matchers": "^20.0.3",
     "lerna": "^3.5.0",
     "prettier": "^1.17.0",
     "pretty-quick": "^1.10.0",
-    "solium": "^1.2.4",
-    "solium-config-web3studio": "^1.2.0",
-    "truffle": "^5.0.17"
+    "solhint": "^2.1.0",
+    "solhint-config-web3studio": "^3.0.0",
+    "web3studio-helpers": "^3.0.0"
   },
   "workspaces": {
     "packages": [

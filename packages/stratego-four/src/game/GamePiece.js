@@ -4,7 +4,7 @@ import * as colors from '../theme/colors';
 /**
  * A Game Piece Component
  *
- * @param {Object} props - props
+ * @param {object} props - props
  * @param {string} props.color - Color of the piece
  * @param {boolean} props.isSelected - is the piece selected?
  * @param {...Array} props.props - The rest of the props

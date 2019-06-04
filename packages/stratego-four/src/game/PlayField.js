@@ -16,7 +16,7 @@ import { setPlayer, selectPiece, movePiece } from './gameReducer';
 /**
  * Renders the play field that represents the board game
  *
- * @param {Object} game - Game state
+ * @param {object} game - Game state
  * @returns {React.Element} - Rendered element
  */
 const PlayField = ({
@@ -78,8 +78,8 @@ const PlayField = ({
 /**
  * Maps redux state to element props
  *
- * @param {Object} state - current state
- * @returns {Object} props to pass through to the component
+ * @param {object} state - current state
+ * @returns {object} props to pass through to the component
  */
 const mapStateToProps = createStructuredSelector({
   pieces: selectPieces,
