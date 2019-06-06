@@ -24,7 +24,7 @@ const isLocalhost = Boolean(
 /**
  * Register the service worker in production
  *
- * @param {Object} config - Config options
+ * @param {object} config - Config options
  */
 export function register(config) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
@@ -64,7 +64,7 @@ export function register(config) {
  * Register a serviceworker after validating
  *
  * @param {string} swUrl - Service worker url
- * @param {Object} config - SW config object
+ * @param {object} config - SW config object
  */
 function registerValidSW(swUrl, config) {
   navigator.serviceWorker
@@ -114,7 +114,7 @@ function registerValidSW(swUrl, config) {
  * Check if the service worker can be found. If it can't reload the page.
  *
  * @param {string} swUrl - Service worker url
- * @param {Object} config - SW config object
+ * @param {object} config - SW config object
  */
 function checkValidServiceWorker(swUrl, config) {
   fetch(swUrl)

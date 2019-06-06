@@ -15,7 +15,7 @@
     "build:truffle": "yarn clean && yarn truffle build --contracts_build_directory=$(pwd)/src/build/contracts",
     "test": "yarn build:truffle && CI=true yarn test:web && yarn test:truffle",
     "test:web": "react-scripts test",
-    "test:truffle": "truffle test",
+    "test:truffle": "w3s-truffle-test",
     "eject": "react-scripts eject"
   },
   "dependencies": {
@@ -38,6 +38,7 @@
     "web3-provider-engine": "^15.0.0"
   },
   "devDependencies": {
+    "prettier-plugin-solidity": "^1.0.0-alpha.22",
     "truffle-hdwallet-provider": "^1.0.9"
   },
   "browserslist": {

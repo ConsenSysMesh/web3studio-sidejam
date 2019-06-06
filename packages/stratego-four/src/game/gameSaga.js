@@ -21,7 +21,7 @@ let stratego4;
 /**
  * Get the default web3 tx options
  *
- * @returns {IterableIterator<Object>} Default Options
+ * @returns {IterableIterator<object>} Default Options
  */
 function* defaultTxOps() {
   const player = yield select(selectPlayer);
@@ -72,7 +72,7 @@ function* initializePlayer({ player }) {
 /**
  * Stores web3 libraries for other sagas
  *
- * @param {Object} action - Drizzle action
+ * @param {object} action - Drizzle action
  */
 export function initializeWeb3(action) {
   web3 = action.web3;
@@ -114,7 +114,7 @@ export function* initializePlayerPieces() {
 /**
  * Handle when drizzle receives player piece rank hashes
  *
- * @param {Object} action - redux action
+ * @param {object} action - redux action
  */
 export function* handleGotGamePieces(action) {
   const player = yield select(selectPlayer);
@@ -139,7 +139,7 @@ export function* handleGotGamePieces(action) {
 /**
  * Handles when drizzle receives contract events, switches to fn handlers
  *
- * @param {Object} action - Redux action
+ * @param {object} action - Redux action
  */
 export function* handleGotContractVar(action) {
   switch (action.variable) {
