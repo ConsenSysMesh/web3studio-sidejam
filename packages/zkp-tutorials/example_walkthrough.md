@@ -43,7 +43,7 @@ a `commitment` is a function whose input and output are both positive integers.
 
 `````go
 func commitment(uint x) uint{
-    uint y;
+    var y uint;
 ...
     return y;
 }
